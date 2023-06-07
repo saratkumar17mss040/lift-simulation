@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lift simulation</title>
+</head>
+
+<body>
+    <!-- Start of the lift form -->
+    <form onsubmit="return false;" id="lift-form">
+        <div>
+            <label for="no-of-floors">Number of floors:</label>
+            <input type="number" name="no-of-floors" id="no-of-floors" placeholder="Please enter the number of floors"
+                required>
+        </div>
+        <div>
+            <label for="no-of-lifts">Number of lifts:</label>
+            <input type="number" name="no-of-lifts" id="no-of-lifts" placeholder="Please enter the number of lifts"
+                required>
+        </div>
+        <button id="generate-lift-btn">Generate lift simulation</button>
+    </form>
+    <!-- End of the lift form -->
+    <!-- Start of the lift container -->
+    <main id="lift-simulation-container">
+        <!-- Start of floor -->
+        <!-- <div class="floor">
+            <div class="floor-btn">
+                <div class="floor-btn-controls">
+                    <button class="floor-btn-up">Up</button>
+                    <button class="floor-btn-down">Down</button>
+                </div>
+                <div class="lifts">
+                    <div class="rect-lift">
+                    </div>
+                    <div class="rect-lift">
+                    </div>
+                    <div class="rect-lift">
+                    </div>
+                </div>
+                <div class="floor-no">
+                    <div class="floor-hr-line">
+                        <span> &nbsp; Floor 4</span>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- End of floor -->
+        <!-- Start of floor -->
+        <!-- <div class="floor">
+            <div class="floor-btn">
+                <div class="floor-btn-controls">
+                    <button class="floor-btn-up">Up</button>
+                    <button class="floor-btn-down">Down</button>
+                </div>
+                <div class="lifts">
+                    <div class="rect-lift">
+                        <div class="lift">
+                            <div class="left-door"></div>
+                            <div class="right-door"></div>
+                        </div>
+                    </div>
+                    <div class="rect-lift">
+                        <div class="lift">
+                            <div class="left-door"></div>
+                            <div class="right-door"></div>
+                        </div>
+                    </div>
+                    <div class="rect-lift">
+                        <div class="lift">
+                            <div class="left-door"></div>
+                            <div class="right-door"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floor-no">
+                    <div class="floor-hr-line">
+                        <span> &nbsp; Floor 4</span>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- End of floor -->
+    </main>
+    <!-- End of the lift container -->
+    <link rel="stylesheet" href="./css/main.css">
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

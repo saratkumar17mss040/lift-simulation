@@ -1,0 +1,155 @@
+/* Mobile style */
+
+body {
+    margin: 0 auto;
+    max-width: 50rem;
+    padding: 2rem;
+}
+
+#lift-simulation-container {
+    height: 500px;
+}
+
+#lift-form {
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#lift-form input {
+    padding-left: 1.05rem;
+    padding-right: 1.05rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+#generate-lift-btn {
+    cursor: pointer;
+    padding-left: 1.05rem;
+    padding-right: 1.05rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.floor {
+    min-height: 10%;
+    margin-top: 3rem;
+    /* max-width: 1000px; */
+}
+
+.floor-no {
+    margin-top: 2rem;
+}
+
+.floor-no hr {
+    display: inline-block;
+    width: 93%;
+    vertical-align: middle;
+}
+
+.floor-no hr span {
+    vertical-align: middle;
+}
+
+.floor-hr-line {
+    border-bottom: 2px solid black;
+}
+
+.floor-btn-controls button {
+    padding: 0.15rem;
+}
+
+.floor-btn-controls {
+    display: flex;
+    flex-direction: column;
+    max-width: 25%;
+    row-gap: 0.5rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+.floor-btn-controls button {
+    width: fit-content;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.floor-btn-up,
+.floor-btn-down {
+    border: 1px solid gray;
+}
+
+.floor-btn-up {
+    background-color: lightseagreen;
+}
+
+.floor-btn-down {
+    background-color: yellow;
+}
+
+.lifts {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    margin-left: 4rem;
+}
+
+/* .rect-lift {
+    width: 20%;
+    height: 70px;
+    background-color: skyblue;
+} */
+
+.lift {
+    display: flex;
+}
+
+.left-door {
+    width: 35px;
+    height: 70px;
+    background-color: lightcoral;
+}
+
+.right-door {
+    width: 35px;
+    height: 70px;
+    background-color: lightblue;
+}
+
+
+/* Desktop style */
+
+@media(min-width: 900px) {
+
+    #lift-form {
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+
+    #generate-lift-btn {
+        /* flex-grow: 1; */
+    }
+
+    body {
+        /* max-width: 70rem; */
+    }
+
+    .rect-lift {
+        width: 10%;
+    }
+}
