@@ -11,10 +11,12 @@ class LiftController {
 			'click',
 			this.validateLiftForm
 		);
-		this.liftView.elements.liftSimulationContainer.addEventListener(
-			'click',
-			this.moveNearestLift
-		);
+		console.log(this.liftView.elements.allButtons);
+		// this.liftView.elements.liftSimulationContainer.addEventListener(
+		// 	'click',
+		// 	this.moveNearestLift
+		// );
+
 		this.checkIfScreenIsSmall();
 	}
 
@@ -26,76 +28,89 @@ class LiftController {
 			const { noOfLifts } = this.liftView.elements;
 			if (noOfLifts.value > 3) {
 				// clear the lift simulation generation and ask the user to enter the valid inputs based on screen size again
-				// alert(
-				// 	"Please enter valid inputs again inorder to simulate lifts in small screens. Note that input for no of lifts more than 2 won't work on small screens"
-				// );
+				alert(
+					"Please enter valid inputs again inorder to simulate lifts in small screens. Note that input for no of lifts more than 3 won't work on small screens"
+				);
 				// alert('Reset successfully');
+				// reset lift state
+				this.liftModel.liftState = [];
 				this.liftView.resetLiftSimulationView();
 			}
 			return true;
 		}
 	};
 
-	moveNearestLift = (event) => {
-		// note that this event comes from the main tag element of lift simulation container
-		// if the element has class floor-btn-up, floor-btn-down -> figure out that the click happened on lift buttons
-		// get the parent of the button element
-		// get the parents sibling element -> class with lifts -> check if it has any child element with class rect-lift , if so grab the first lift and do open,close animation
-		// else if the parents sibling element doesnt have any child element with class rect-lift -> find the nearest lift and move it
-		// finding nearest lift
-		// before that we need to see from where the button is clicked - top floor, ground floor, middle floor ?
-		// get the button class name and check if it doesnt contain the sibling button with the other class name
-			// for top floor -> // 
+	moveNearestLift = (floorNoToMoveTheLift) => {
+		// get the lift state
+		let liftState = this.liftModel.liftState;
+		let targetFloor = floorNoToMoveTheLift;
+		let oldFloor = undefined;
+		let nearestLift = undefined;
+		let nearestLiftIndex = undefined;
+		let minDistance = Infinity;
 
-		// <div class="floor">
-		// 	<div class="floor-btn">
-		// 		<div class="floor-btn-controls">
-		// 			<button class="floor-btn-up">Up</button>
-		// 		</div>
-		// 		<div class="lifts">
-		// 			<div class="rect-lift">
-		// 				<div class="lift">
-		// 					<div class="left-door"></div>
-		// 					<div class="right-door"></div>
-		// 				</div>
-		// 			</div>
-		// 			<div class="rect-lift">
-		// 				<div class="lift">
-		// 					<div class="left-door"></div>
-		// 					<div class="right-door"></div>
-		// 				</div>
-		// 			</div>
-		// 			<div class="rect-lift">
-		// 				<div class="lift">
-		// 					<div class="left-door"></div>
-		// 					<div class="right-door"></div>
-		// 				</div>
-		// 			</div>
-		// 			<div class="rect-lift">
-		// 				<div class="lift">
-		// 					<div class="left-door"></div>
-		// 					<div class="right-door"></div>
-		// 				</div>
-		// 			</div>
-		// 		</div>
-		// 		<div class="floor-no">
-		// 			<div class="floor-hr-line">
-		// 				<span>&nbsp; Floor 0</span>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// </div>;
-		console.log(event.target); 
+		for (let i = 0; i < liftState.length; i++) {
+			const lift = liftState[i];
+			if (lift.currentFloor !== undefined) {
+				const distance = Math.abs(lift.currentFloor - targetFloor);
+				if (distance < minDistance) {
+					minDistance = distance;
+					nearestLift = lift;
+					nearestLiftIndex = i;
+				}
+			}
+		}
+		oldFloor = nearestLift.currentFloor;
+
+		// update the nearest lift to move to that floor
+		// update the whole lift state
+		console.log('Nearest lift');
+		console.log(nearestLift);
+		if (nearestLift) {
+			nearestLift.currentFloor = targetFloor;
+			nearestLift.idle = false;
+			// Based on the lift index move the lift in the UI
+			this.liftView.moveTheLiftInView(nearestLiftIndex, oldFloor, targetFloor);
+			// update the whole lift state
+			liftState = [...liftState];
+		}
+		// this.liftView.openLiftDoors(nearestLiftIndex);
+		// setTimeout(() => {
+		// 	this.liftView.closeLiftDoors(nearestLiftIndex);
+		// }, 2500);
+		console.log(this.liftModel.liftState);
 	};
 
 	init() {
 		this.initializeEventHandlers();
 	}
 
+	processFloorNoWhereTheLiftIsRequested = (event) => {
+		const floor = event.target.parentNode.parentNode.parentNode;
+		const floorNoStr = floor.getAttribute('id');
+		const floorNo = +floorNoStr[floorNoStr.length - 1];
+		console.log(floorNo);
+		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
+			this.moveNearestLift(floorNo);
+			// just take the first lift in the current floor and animate opening and closing the door
+		} else {
+			// just take the first lift in the current floor and animate opening and closing the door
+			console.log('lift--->');
+			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
+			// console.log(liftIndex);
+			this.liftView.openLiftDoors(liftIndex);
+			setTimeout(() => {
+				this.liftView.closeLiftDoors(liftIndex);
+			}, 2500);
+			console.log(`Lift already exists in the ${floorNo} floor !`);
+		}
+	};
+
 	validateLiftForm = () => {
 		const MAX_FLOORS = 15;
 		const { elements } = this.liftView;
 		const noOfLifts = +elements.noOfLifts.value;
+		console.log(noOfLifts);
 		const noOfFloors = +elements.noOfFloors.value;
 		let isFormValid = true;
 		if (noOfFloors <= 0) {
@@ -121,10 +136,24 @@ class LiftController {
 			isFormValid = false;
 		}
 		if (isFormValid) {
-			this.liftView.generateLiftSimulationView(noOfLifts, noOfFloors);
+			// if (!this.liftView.isFloorsAndLiftsCreatedInView()) {
+			this.liftModel.createLiftState(noOfLifts);
+			// }
+			const { liftState } = this.liftModel;
+			this.liftView.generateLiftSimulationView(liftState, noOfFloors);
+			const liveLiftButtons = this.liftView.getLiveLiftButtons();
+			liveLiftButtons.forEach((button) => {
+				button.addEventListener(
+					'click',
+					this.processFloorNoWhereTheLiftIsRequested
+				);
+			});
 			// this.liftModel.generateFloorData(noOfLifts, noOfFloors);
 		}
 	};
+
+	// addTransistionEndEventListenersToAllLifts = () => {	
+	// }
 }
 
 export { LiftController };

@@ -22,7 +22,8 @@ Create a web app where you can simulate lift mechanics for a client
 
 # Todo
 
-[ ] - First get the inputs for both no of floors and lifts from the user with basic validations and      
-      store it local storge.
-[ ] - Create a static style with the given design for the entire UI which includes the lift, and buttons.
-[ ] - 
+[X] - Do add on multiple floors and lifts if form is submitted subsequently
+[X] - Open and close doors animation
+      - If the lift exists in the req floor - just open and close the door
+      - Else move the nearest lift to that floor - and then open and close the door
+[ ] - check if idle prop is used in liftState - its not used 

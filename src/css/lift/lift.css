@@ -7,6 +7,7 @@ body {
 }
 
 #lift-simulation-container {
+    /* position: relative; */
     height: 500px;
 }
 
@@ -15,6 +16,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+#lift-form div {
+    display: flex;
+    justify-content: space-between;
 }
 
 #lift-form input {
@@ -107,11 +113,17 @@ input[type="number"] {
     margin-left: 4rem;
 }
 
-/* .rect-lift {
-    width: 20%;
-    height: 70px;
-    background-color: skyblue;
-} */
+.rect-lift {
+    width: 70px;
+    background-color: lightseagreen;
+}
+
+.rect-lift {
+    /* transform: translate(0, 0); */
+    /* transition: transform 1s ease; */
+}
+
+.doors {}
 
 .lift {
     display: flex;
@@ -121,12 +133,22 @@ input[type="number"] {
     width: 35px;
     height: 70px;
     background-color: lightcoral;
+    padding-right: 32px;
+    transition: width 2.5s, padding-right 2.5s;
 }
 
 .right-door {
     width: 35px;
     height: 70px;
     background-color: lightblue;
+    padding-left: 32px;
+    transition: width 2.5s, padding-left 2.5s;
+}
+
+.open {
+    width: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 
@@ -151,5 +173,9 @@ input[type="number"] {
 
     .rect-lift {
         width: 10%;
+    }
+
+    #lift-form div {
+        display: block;
     }
 }
