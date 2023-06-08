@@ -11,12 +11,6 @@ class LiftController {
 			'click',
 			this.validateLiftForm
 		);
-		console.log(this.liftView.elements.allButtons);
-		// this.liftView.elements.liftSimulationContainer.addEventListener(
-		// 	'click',
-		// 	this.moveNearestLift
-		// );
-
 		this.checkIfScreenIsSmall();
 	}
 
@@ -31,7 +25,6 @@ class LiftController {
 				alert(
 					"Please enter valid inputs again inorder to simulate lifts in small screens. Note that input for no of lifts more than 3 won't work on small screens"
 				);
-				// alert('Reset successfully');
 				// reset lift state
 				this.liftModel.liftState = [];
 				this.liftView.resetLiftSimulationView();
@@ -64,21 +57,13 @@ class LiftController {
 
 		// update the nearest lift to move to that floor
 		// update the whole lift state
-		console.log('Nearest lift');
-		console.log(nearestLift);
 		if (nearestLift) {
 			nearestLift.currentFloor = targetFloor;
 			nearestLift.idle = false;
 			// Based on the lift index move the lift in the UI
 			this.liftView.moveTheLiftInView(nearestLiftIndex, oldFloor, targetFloor);
-			// update the whole lift state
 			liftState = [...liftState];
 		}
-		// this.liftView.openLiftDoors(nearestLiftIndex);
-		// setTimeout(() => {
-		// 	this.liftView.closeLiftDoors(nearestLiftIndex);
-		// }, 2500);
-		console.log(this.liftModel.liftState);
 	};
 
 	init() {
@@ -89,20 +74,16 @@ class LiftController {
 		const floor = event.target.parentNode.parentNode.parentNode;
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
-		console.log(floorNo);
 		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
 			this.moveNearestLift(floorNo);
-			// just take the first lift in the current floor and animate opening and closing the door
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
-			console.log('lift--->');
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
-			// console.log(liftIndex);
 			this.liftView.openLiftDoors(liftIndex);
 			setTimeout(() => {
 				this.liftView.closeLiftDoors(liftIndex);
 			}, 2500);
-			console.log(`Lift already exists in the ${floorNo} floor !`);
+			// console.log(`Lift already exists in the ${floorNo} floor !`);
 		}
 	};
 
@@ -110,7 +91,6 @@ class LiftController {
 		const MAX_FLOORS = 15;
 		const { elements } = this.liftView;
 		const noOfLifts = +elements.noOfLifts.value;
-		console.log(noOfLifts);
 		const noOfFloors = +elements.noOfFloors.value;
 		let isFormValid = true;
 		if (noOfFloors <= 0) {
@@ -131,14 +111,12 @@ class LiftController {
 				'You cannot set no of lifts less than or equal to 0 or leave it empty'
 			);
 			isFormValid = false;
-		} else if (this.checkIfScreenIsSmall() && noOfLifts > 2) {
-			alert('You cannot set more than 2 lifts in small screens');
+		} else if (this.checkIfScreenIsSmall() && noOfLifts > 3) {
+			alert('You cannot set more than 3 lifts in small screens');
 			isFormValid = false;
 		}
 		if (isFormValid) {
-			// if (!this.liftView.isFloorsAndLiftsCreatedInView()) {
 			this.liftModel.createLiftState(noOfLifts);
-			// }
 			const { liftState } = this.liftModel;
 			this.liftView.generateLiftSimulationView(liftState, noOfFloors);
 			const liveLiftButtons = this.liftView.getLiveLiftButtons();
@@ -148,12 +126,8 @@ class LiftController {
 					this.processFloorNoWhereTheLiftIsRequested
 				);
 			});
-			// this.liftModel.generateFloorData(noOfLifts, noOfFloors);
 		}
 	};
-
-	// addTransistionEndEventListenersToAllLifts = () => {	
-	// }
 }
 
 export { LiftController };

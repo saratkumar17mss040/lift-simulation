@@ -20,14 +20,6 @@ class LiftView {
 
 	generateLiftSimulationView = (liftState, noOfFloors) => {
 		const generateLiftsView = (liftState) => {
-			// let liftContainer = document.querySelectorAll('.rect-lift');
-			// let allFloorLifts = document.querySelectorAll('.lifts');
-			// let groundFloorLifts = allFloorLifts[allFloorLifts?.length - 1];
-			// console.log(groundFloorLifts);
-			// console.log(groundFloorLifts?.childElementCount);
-			// if (groundFloorLifts?.childElementCount > 0) {
-			// 	groundFloorLifts.innerHTML = '';
-			// }
 			let lifts = '';
 			for (let i = 0; i < liftState.length; i++) {
 				lifts += `
@@ -40,8 +32,6 @@ class LiftView {
 			}
 			return lifts;
 		};
-
-		console.log(noOfFloors);
 
 		const liftSimulationContainer = this.elements.liftSimulationContainer;
 		let floors = '';
@@ -80,8 +70,6 @@ class LiftView {
 		}
 
 		liftSimulationContainer.innerHTML = floors;
-		// console.log(document.querySelectorAll('button'));
-		// this.getLiveLiftButtons();
 	};
 
 	isFloorsAndLiftsCreatedInView = () => {
@@ -90,11 +78,8 @@ class LiftView {
 
 	findLeftAndRightDoorsOfLift = (liftIndex) => {
 		const lift = document.querySelector(`.lifts #lift-${liftIndex}`);
-		console.log(lift);
 		const leftDoor = lift.querySelector('.lift .left-door');
 		const rightDoor = lift.querySelector('.lift .right-door');
-		console.log(leftDoor);
-		console.log(rightDoor);
 		return [leftDoor, rightDoor];
 	};
 
@@ -112,10 +97,6 @@ class LiftView {
 
 	moveTheLiftInView = (liftIndex, oldFloorNo, targetFloorNo) => {
 		const lift = document.getElementById(`lift-${liftIndex}`);
-		// const yAxis =
-		// oldFloorNo < targetFloorNo
-		// 	? targetFloorNo * -205 + 'px'
-		// 	: targetFloorNo * -204 + 'px';
 		const yAxis = targetFloorNo * -205 + 'px';
 		const transitionTime = Math.abs(targetFloorNo - oldFloorNo) * 2;
 		lift.style.transition = `transform ${transitionTime}s ease`;
