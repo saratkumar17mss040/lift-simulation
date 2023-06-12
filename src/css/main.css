@@ -2,15 +2,24 @@
 
 /* Reset default styles */
 
+:root {
+    --black-color: black;
+    --gray-color: gray;
+    --light-sea-green-color: lightseagreen;
+    --yellow-color: rgb(232, 232, 44);
+    --light-coral-color: lightcoral;
+    --light-blue: lightblue;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-*::before, *::after {
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-

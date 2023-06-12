@@ -57,7 +57,6 @@ class LiftController {
 
 		// if the nearestLift floor is undefined, which means we ran out of lifts and all lifts are busy moving
 		if (nearestLift === undefined) {
-			console.log('push happened');
 			this.liftModel.liftRequests.push(floorNoToMoveTheLift);
 		} else {
 			oldFloor = nearestLift.currentFloor;
@@ -113,28 +112,31 @@ class LiftController {
 		const noOfLifts = +elements.noOfLifts.value;
 		const noOfFloors = +elements.noOfFloors.value;
 		let isFormValid = true;
+		if (noOfFloors === 1 && noOfLifts === 1) {
+			alert('Please: you cannot set 1 floor and 1 lift');
+		}
 		if (noOfFloors <= 0) {
 			alert(
-				'You cannot set no of floors less than or equal to 0 or leave it empty'
+				'Please: you cannot set no of floors less than or equal to 0 or leave it empty'
 			);
 			isFormValid = false;
 		} else if (noOfFloors > 15) {
 			alert(
-				`You cannot set more than ${MAX_FLOORS} floors - Max limit reached`
+				`Please: you cannot set more than ${MAX_FLOORS} floors - Max limit reached`
 			);
 			isFormValid = false;
 		}
 		if (noOfFloors < noOfLifts) {
-			alert('No of floors cannot be less than no of lifts');
+			alert('Please: No of floors cannot be less than no of lifts');
 			isFormValid = false;
 		}
 		if (noOfLifts <= 0) {
 			alert(
-				'You cannot set no of lifts less than or equal to 0 or leave it empty'
+				'Please: You cannot set no of lifts less than or equal to 0 or leave it empty'
 			);
 			isFormValid = false;
 		} else if (this.checkIfScreenIsSmall() && noOfLifts > 5) {
-			alert('You cannot set more than 5 lifts in small screens');
+			alert('Please: You cannot set more than 5 lifts in small screens');
 			isFormValid = false;
 		}
 		if (isFormValid) {

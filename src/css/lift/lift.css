@@ -7,7 +7,7 @@ body {
 }
 
 #lift-simulation-container {
-    height: 500px;
+    height: 31.25rem;
 }
 
 #lift-form {
@@ -66,7 +66,7 @@ input[type="number"] {
 }
 
 .floor-hr-line {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black-color);
 }
 
 .floor-btn-controls button {
@@ -91,15 +91,15 @@ input[type="number"] {
 
 .floor-btn-up,
 .floor-btn-down {
-    border: 1px solid gray;
+    border: 1px solid var(--light-gray);
 }
 
 .floor-btn-up {
-    background-color: lightseagreen;
+    background-color: var(--light-sea-green-color);
 }
 
 .floor-btn-down {
-    background-color: yellow;
+    background-color: var(--yellow-color);
 }
 
 .lifts {
@@ -112,12 +112,7 @@ input[type="number"] {
 
 .rect-lift {
     width: 20%;
-    background-color: lightseagreen;
-}
-
-.rect-lift {
-    /* transform: translate(0, 0); */
-    /* transition: transform 1s ease; */
+    background-color: var(--light-sea-green-color);
 }
 
 .lift {
@@ -125,20 +120,16 @@ input[type="number"] {
 }
 
 .left-door {
-    /* width: 35px; */
     width: 50%;
-    height: 70px;
-    background-color: lightcoral;
-    /* padding-right: 32px; */
+    height: 4.375rem;
+    background-color: var(--light-coral-color);
     transition: width 2.5s;
 }
 
 .right-door {
-    /* width: 35px; */
     width: 50%;
-    height: 70px;
-    background-color: lightblue;
-    /* padding-left: 32px; */
+    height: 4.375rem;
+    background-color: var(--light-blue);
     transition: width 2.5s;
 }
 
@@ -148,23 +139,18 @@ input[type="number"] {
     padding-left: 0;
 }
 
-@media(max-width: 400px) {
+/* Small screen */
+/* 400px */
+@media(max-width: 25em) {
 
     .lifts {
-        /* transform: scale(0.98); */
-        margin-left: 2rem;
+        /* margin-left: 1rem; */
     }
-
-    /* .rect-lift {
-        width: 50px !important;
-        background-color: greenyellow;
-    } */
 }
 
-
 /* Desktop style */
-
-@media(min-width: 900px) {
+/* 900px */
+@media(min-width: 56.25em) {
 
     #lift-form {
         flex-direction: row;
@@ -172,10 +158,6 @@ input[type="number"] {
         flex-wrap: wrap;
         margin-top: 2rem;
     }
-
-    #generate-lift-btn {}
-
-    body {}
 
     .rect-lift {
         width: 10%;
