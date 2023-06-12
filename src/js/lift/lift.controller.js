@@ -20,10 +20,10 @@ class LiftController {
 			return false;
 		} else {
 			const { noOfLifts } = this.liftView.elements;
-			if (noOfLifts.value > 3) {
+			if (noOfLifts.value > 5) {
 				// clear the lift simulation generation and ask the user to enter the valid inputs based on screen size again
 				alert(
-					"Please enter valid inputs again inorder to simulate lifts in small screens. Note that input for no of lifts more than 3 won't work on small screens"
+					"Please enter valid inputs again inorder to simulate lifts in small screens. Note that input for no of lifts more than 5 won't work on small screens"
 				);
 				// reset lift state
 				this.liftModel.liftState = [];
@@ -43,7 +43,6 @@ class LiftController {
 		let minDistance = Infinity;
 
 		// Here, i am finding the nearest lift based on the current lift state.
-		// the issue is if people keep on clicking on many up down buttons -> it can ran out of lifts and there wont be any nearest lift
 		for (let i = 0; i < liftState.length; i++) {
 			const lift = liftState[i];
 			if (lift.currentFloor !== undefined && lift.idle === true) {
@@ -56,7 +55,7 @@ class LiftController {
 			}
 		}
 
-		// if the current floor is undefined, which means we ran out of lifts and all lifts are busy moving
+		// if the nearestLift floor is undefined, which means we ran out of lifts and all lifts are busy moving
 		if (nearestLift === undefined) {
 			console.log('push happened');
 			this.liftModel.liftRequests.push(floorNoToMoveTheLift);
@@ -93,9 +92,11 @@ class LiftController {
 			nearestLift.idle = false;
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
 			this.liftView.openLiftDoors(liftIndex);
+
 			setTimeout(() => {
 				this.liftView.closeLiftDoors(liftIndex);
 			}, 5000);
+
 			setTimeout(() => {
 				nearestLift.idle = true;
 				nearestLift.currentFloor = floorNo;
@@ -118,11 +119,13 @@ class LiftController {
 			);
 			isFormValid = false;
 		} else if (noOfFloors > 15) {
-			alert(`You cannot set more than ${MAX_FLOORS} floors - Max limit`);
+			alert(
+				`You cannot set more than ${MAX_FLOORS} floors - Max limit reached`
+			);
 			isFormValid = false;
 		}
 		if (noOfFloors < noOfLifts) {
-			alert('No of floors cannot be less than lifts');
+			alert('No of floors cannot be less than no of lifts');
 			isFormValid = false;
 		}
 		if (noOfLifts <= 0) {
@@ -130,8 +133,8 @@ class LiftController {
 				'You cannot set no of lifts less than or equal to 0 or leave it empty'
 			);
 			isFormValid = false;
-		} else if (this.checkIfScreenIsSmall() && noOfLifts > 3) {
-			alert('You cannot set more than 3 lifts in small screens');
+		} else if (this.checkIfScreenIsSmall() && noOfLifts > 5) {
+			alert('You cannot set more than 5 lifts in small screens');
 			isFormValid = false;
 		}
 		if (isFormValid) {

@@ -111,7 +111,7 @@ input[type="number"] {
 }
 
 .rect-lift {
-    width: 70px;
+    width: 20%;
     background-color: lightseagreen;
 }
 
@@ -125,25 +125,40 @@ input[type="number"] {
 }
 
 .left-door {
-    width: 35px;
+    /* width: 35px; */
+    width: 50%;
     height: 70px;
     background-color: lightcoral;
-    padding-right: 32px;
-    transition: width 2.5s, padding-right 2.5s;
+    /* padding-right: 32px; */
+    transition: width 2.5s;
 }
 
 .right-door {
-    width: 35px;
+    /* width: 35px; */
+    width: 50%;
     height: 70px;
     background-color: lightblue;
-    padding-left: 32px;
-    transition: width 2.5s, padding-left 2.5s;
+    /* padding-left: 32px; */
+    transition: width 2.5s;
 }
 
 .open {
     width: 0;
     padding-right: 0;
     padding-left: 0;
+}
+
+@media(max-width: 400px) {
+
+    .lifts {
+        /* transform: scale(0.98); */
+        margin-left: 2rem;
+    }
+
+    /* .rect-lift {
+        width: 50px !important;
+        background-color: greenyellow;
+    } */
 }
 
 
@@ -158,11 +173,9 @@ input[type="number"] {
         margin-top: 2rem;
     }
 
-    #generate-lift-btn {
-    }
+    #generate-lift-btn {}
 
-    body {
-    }
+    body {}
 
     .rect-lift {
         width: 10%;

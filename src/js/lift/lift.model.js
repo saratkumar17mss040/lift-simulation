@@ -1,7 +1,6 @@
 class LiftModel {
 	constructor() {
 		this.liftState = [];
-		//
 	}
 
 	createLiftState = (noOfLifts) => {

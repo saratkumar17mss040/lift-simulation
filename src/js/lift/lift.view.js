@@ -124,6 +124,7 @@ class LiftView {
 		setTimeout(() => {
 			this.openLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToOpenDoors);
+
 		setTimeout(() => {
 			this.closeLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToCloseDoors);
@@ -137,6 +138,7 @@ class LiftView {
 				moveNearestLift(liftRequests.shift());
 			}
 		}, liftStop);
+		
 	};
 
 	resetLiftSimulationView = () => {
