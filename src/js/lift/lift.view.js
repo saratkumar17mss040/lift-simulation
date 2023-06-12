@@ -78,24 +78,37 @@ class LiftView {
 
 	findLeftAndRightDoorsOfLift = (liftIndex) => {
 		const lift = document.querySelector(`.lifts #lift-${liftIndex}`);
-		const leftDoor = lift.querySelector('.lift .left-door');
-		const rightDoor = lift.querySelector('.lift .right-door');
+		const leftDoor = lift?.querySelector('.lift .left-door');
+		const rightDoor = lift?.querySelector('.lift .right-door');
 		return [leftDoor, rightDoor];
 	};
 
 	openLiftDoors = (liftIndex) => {
 		const [leftDoor, rightDoor] = this.findLeftAndRightDoorsOfLift(liftIndex);
-		leftDoor.classList.add('open');
-		rightDoor.classList.add('open');
+		if (leftDoor !== undefined && rightDoor !== undefined) {
+			leftDoor.classList.add('open');
+			rightDoor.classList.add('open');
+		}
 	};
 
 	closeLiftDoors = (liftIndex) => {
 		const [leftDoor, rightDoor] = this.findLeftAndRightDoorsOfLift(liftIndex);
-		leftDoor.classList.remove('open');
-		rightDoor.classList.remove('open');
+		if (leftDoor !== undefined && rightDoor !== undefined) {
+			leftDoor.classList.remove('open');
+			rightDoor.classList.remove('open');
+		}
 	};
 
-	moveTheLiftInView = (liftIndex, oldFloorNo, targetFloorNo) => {
+	moveTheLiftInView = (
+		liftState,
+		nearestLift,
+		liftIndex,
+		oldFloorNo,
+		targetFloorNo,
+		liftRequests,
+		moveNearestLift
+	) => {
+		nearestLift.idle = false;
 		const lift = document.getElementById(`lift-${liftIndex}`);
 		const yAxis = targetFloorNo * -205 + 'px';
 		const transitionTime = Math.abs(targetFloorNo - oldFloorNo) * 2;
@@ -104,12 +117,26 @@ class LiftView {
 		const transistionTimeInMilliSecStartToOpenDoors = transitionTime * 1000;
 		const transistionTimeInMilliSecStartToCloseDoors =
 			transistionTimeInMilliSecStartToOpenDoors + 2500;
+		const liftStop = transistionTimeInMilliSecStartToCloseDoors + 4000;
+
+		// update the lift state
+		// stop the lift for 2's
 		setTimeout(() => {
 			this.openLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToOpenDoors);
 		setTimeout(() => {
 			this.closeLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToCloseDoors);
+
+		setTimeout(() => {
+			nearestLift.idle = true;
+			nearestLift.currentFloor = targetFloorNo;
+			liftState[liftIndex] = nearestLift;
+			liftState = [...liftState];
+			if (liftRequests.length > 0) {
+				moveNearestLift(liftRequests.shift());
+			}
+		}, liftStop);
 	};
 
 	resetLiftSimulationView = () => {

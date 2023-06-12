@@ -1,6 +1,7 @@
 class LiftModel {
 	constructor() {
 		this.liftState = [];
+		//
 	}
 
 	createLiftState = (noOfLifts) => {
@@ -10,19 +11,23 @@ class LiftModel {
 				idle: true,
 				currentFloor: 0,
 			});
+			this.liftRequests = [];
 		}
 	};
 
 	getExistingLifts = (floorNo) => {
 		const existingLifts = this.liftState.filter(
-			(lift) => lift.currentFloor === floorNo
+			(lift) => lift.currentFloor === floorNo && lift.idle === true
 		);
 		return existingLifts;
 	};
 
 	getExistingLiftIndex = (floorNo) => {
 		for (let i = 0; i < this.liftState.length; i++) {
-			if (this.liftState[i].currentFloor === floorNo) {
+			if (
+				this.liftState[i].currentFloor === floorNo &&
+				this.liftState[i].idle === true
+			) {
 				return i;
 			}
 		}

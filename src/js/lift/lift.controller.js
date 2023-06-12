@@ -42,9 +42,11 @@ class LiftController {
 		let nearestLiftIndex = undefined;
 		let minDistance = Infinity;
 
+		// Here, i am finding the nearest lift based on the current lift state.
+		// the issue is if people keep on clicking on many up down buttons -> it can ran out of lifts and there wont be any nearest lift
 		for (let i = 0; i < liftState.length; i++) {
 			const lift = liftState[i];
-			if (lift.currentFloor !== undefined) {
+			if (lift.currentFloor !== undefined && lift.idle === true) {
 				const distance = Math.abs(lift.currentFloor - targetFloor);
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -53,16 +55,22 @@ class LiftController {
 				}
 			}
 		}
-		oldFloor = nearestLift.currentFloor;
 
-		// update the nearest lift to move to that floor
-		// update the whole lift state
-		if (nearestLift) {
-			nearestLift.currentFloor = targetFloor;
-			nearestLift.idle = false;
-			// Based on the lift index move the lift in the UI
-			this.liftView.moveTheLiftInView(nearestLiftIndex, oldFloor, targetFloor);
-			liftState = [...liftState];
+		// if the current floor is undefined, which means we ran out of lifts and all lifts are busy moving
+		if (nearestLift === undefined) {
+			console.log('push happened');
+			this.liftModel.liftRequests.push(floorNoToMoveTheLift);
+		} else {
+			oldFloor = nearestLift.currentFloor;
+			this.liftView.moveTheLiftInView(
+				liftState,
+				nearestLift,
+				nearestLiftIndex,
+				oldFloor,
+				targetFloor,
+				this.liftModel.liftRequests,
+				this.moveNearestLift
+			);
 		}
 	};
 
@@ -74,16 +82,27 @@ class LiftController {
 		const floor = event.target.parentNode.parentNode.parentNode;
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
-		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
+		if (
+			this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
+				.length !== 0
+		) {
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
+			const nearestLift = this.liftModel.liftState;
+			nearestLift.idle = false;
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
 			this.liftView.openLiftDoors(liftIndex);
 			setTimeout(() => {
 				this.liftView.closeLiftDoors(liftIndex);
-			}, 2500);
-			// console.log(`Lift already exists in the ${floorNo} floor !`);
+			}, 5000);
+			setTimeout(() => {
+				nearestLift.idle = true;
+				nearestLift.currentFloor = floorNo;
+				this.liftModel.liftState[liftIndex] = nearestLift;
+				this.liftModel.liftState = [...this.liftModel.liftState];
+				console.log(`Lift already exists in the ${floorNo} floor !`);
+			}, 7000);
 		}
 	};
 
