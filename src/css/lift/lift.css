@@ -53,6 +53,7 @@ input[type="number"] {
 
 .floor-no {
     margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .floor-no hr {
@@ -84,8 +85,8 @@ input[type="number"] {
 
 .floor-btn-controls button {
     width: fit-content;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.25rem;
+    padding: 0.35em 0.65em;
+    border-radius: 0.25em;
     cursor: pointer;
 }
 

@@ -114,6 +114,7 @@ class LiftController {
 		let isFormValid = true;
 		if (noOfFloors === 1 && noOfLifts === 1) {
 			alert('Please: you cannot set 1 floor and 1 lift');
+			isFormValid = false;
 		}
 		if (noOfFloors <= 0) {
 			alert(
