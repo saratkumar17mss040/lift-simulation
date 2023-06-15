@@ -109,6 +109,10 @@ class LiftView {
 		moveNearestLift
 	) => {
 		nearestLift.idle = false;
+		nearestLift.isMoving = true;
+		// nearestLift.idle = true;
+		// nearestLift.currentFloor = targetFloorNo;
+		console.log(nearestLift);
 		const lift = document.getElementById(`lift-${liftIndex}`);
 		const yAxis = targetFloorNo * -205 + 'px';
 		const transitionTime = Math.abs(targetFloorNo - oldFloorNo) * 2;
@@ -131,14 +135,15 @@ class LiftView {
 
 		setTimeout(() => {
 			nearestLift.idle = true;
+			nearestLift.isMoving = false;
 			nearestLift.currentFloor = targetFloorNo;
 			liftState[liftIndex] = nearestLift;
 			liftState = [...liftState];
+			console.log(nearestLift);
 			if (liftRequests.length > 0) {
 				moveNearestLift(liftRequests.shift());
 			}
 		}, liftStop);
-		
 	};
 
 	resetLiftSimulationView = () => {

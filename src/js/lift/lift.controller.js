@@ -80,16 +80,18 @@ class LiftController {
 		const floor = event.target.parentNode.parentNode.parentNode;
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
-		if (
-			this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
-				.length !== 0
-		) {
+		console.log(floorNo, '===>');
+		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
+			console.log(
+				this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
+			);
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
-			const nearestLift = this.liftModel.liftState;
-			nearestLift.idle = false;
+			console.log(`Lift already exists in the ${floorNo} floor !`);
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
+			const nearestLift = this.liftModel.liftState[liftIndex];
+			nearestLift.idle = false;
 			this.liftView.openLiftDoors(liftIndex);
 
 			setTimeout(() => {
@@ -101,7 +103,6 @@ class LiftController {
 				nearestLift.currentFloor = floorNo;
 				this.liftModel.liftState[liftIndex] = nearestLift;
 				this.liftModel.liftState = [...this.liftModel.liftState];
-				console.log(`Lift already exists in the ${floorNo} floor !`);
 			}, 7000);
 		}
 	};
