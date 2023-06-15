@@ -80,30 +80,35 @@ class LiftController {
 		const floor = event.target.parentNode.parentNode.parentNode;
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
-		console.log(floorNo, '===>');
+		// console.log(floorNo, '===>');
 		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
-			console.log(
-				this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
-			);
+			// console.log(
+			// 	this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
+			// );
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
-			console.log(`Lift already exists in the ${floorNo} floor !`);
+			// console.log(`Lift already exists in the ${floorNo} floor !`);
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
 			const nearestLift = this.liftModel.liftState[liftIndex];
-			nearestLift.idle = false;
-			this.liftView.openLiftDoors(liftIndex);
+			// console.log(nearestLift, '=> nl');
+			if (nearestLift === undefined) {
+				this.liftModel.liftRequests.push(floorNo);
+			}
+			if (nearestLift !== undefined) {
+				nearestLift.idle = false;
+				this.liftView.openLiftDoors(liftIndex);
+				setTimeout(() => {
+					this.liftView.closeLiftDoors(liftIndex);
+				}, 5000);
 
-			setTimeout(() => {
-				this.liftView.closeLiftDoors(liftIndex);
-			}, 5000);
-
-			setTimeout(() => {
-				nearestLift.idle = true;
-				nearestLift.currentFloor = floorNo;
-				this.liftModel.liftState[liftIndex] = nearestLift;
-				this.liftModel.liftState = [...this.liftModel.liftState];
-			}, 7000);
+				setTimeout(() => {
+					nearestLift.idle = true;
+					nearestLift.currentFloor = floorNo;
+					this.liftModel.liftState[liftIndex] = nearestLift;
+					this.liftModel.liftState = [...this.liftModel.liftState];
+				}, 7000);
+			}
 		}
 	};
 
