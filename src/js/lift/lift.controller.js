@@ -27,6 +27,7 @@ class LiftController {
 				);
 				// reset lift state
 				this.liftModel.liftState = [];
+				this.liftModel.liftRequests = [];
 				this.liftView.resetLiftSimulationView();
 			}
 			return true;
