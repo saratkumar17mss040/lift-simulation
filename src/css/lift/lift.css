@@ -14,6 +14,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding: 3rem;
+    background-color: peachpuff;
 }
 
 #lift-form div {
@@ -34,6 +36,9 @@ body {
     padding-right: 1.05rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    background-color: var(--light-blue);
+    border: 2px solid lightblue;
+    box-shadow: 7px 7px 4px 0px rgba(114, 196, 240, 0.858);
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -44,6 +49,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
     -moz-appearance: textfield;
+    box-shadow: 7px 7px 4px 0px rgba(221, 134, 93, 0.733);
 }
 
 .floor {
@@ -140,12 +146,21 @@ input[type="number"] {
     padding-left: 0;
 }
 
+
 /* Small screen */
 /* 400px */
 @media(max-width: 25em) {
 
     .lifts {
         /* margin-left: 1rem; */
+    }
+
+    label {
+        display: block;
+    }
+
+    #lift-form div {
+        flex-direction: column;
     }
 }
 
@@ -166,5 +181,10 @@ input[type="number"] {
 
     #lift-form div {
         display: block;
+    }
+
+    label {
+        display: inline-block;
+        width: 150px;
     }
 }
