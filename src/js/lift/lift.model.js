@@ -17,14 +17,28 @@ class LiftModel {
 	};
 
 	getExistingLifts = (floorNo) => {
-		const existingLifts = this.liftState.filter(
-			(lift) => lift.currentFloor === floorNo && lift.idle === true
+		let existingMovingLifts = this.liftState.filter(
+			(lift) => lift.movingTo === floorNo
 		);
-		return existingLifts;
+		if (existingMovingLifts.length > 0) {
+			return existingMovingLifts;
+		} else {
+			existingMovingLifts = this.liftState.filter(
+				(lift) => lift.currentFloor === floorNo && lift.idle === true
+			);
+		}
+		return existingMovingLifts;
 	};
 
 	//
 	getExistingLiftIndex = (floorNo) => {
+		// loop through liftState and find if a lift is movingTo that floor if so -> return undefined
+		const anyLiftMoving = this.liftState.filter(
+			(lift) => lift.movingTo === floorNo
+		);
+		if (anyLiftMoving.length > 0) {
+			return null;
+		}
 		for (let i = 0; i < this.liftState.length; i++) {
 			if (this.liftState[i].idle === true) {
 				return i;
@@ -34,6 +48,7 @@ class LiftModel {
 
 	checkIfLiftIsAlreadyThereInTheCurrentFloor = (floorNo) => {
 		const existingLifts = this.getExistingLifts(floorNo);
+		console.log({ existingLifts });
 		return existingLifts.length >= 1;
 	};
 }

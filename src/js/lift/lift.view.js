@@ -140,6 +140,7 @@ class LiftView {
 			nearestLift.idle = true;
 			nearestLift.isMoving = false;
 			nearestLift.currentFloor = targetFloorNo;
+			// nearestLift.movingTo = null;
 			liftState[liftIndex] = nearestLift;
 			liftState = [...liftState];
 			if (liftRequests.length > 0) {

@@ -84,16 +84,21 @@ class LiftController {
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
 		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
-			// console.log('Lift not there in the current floor');
+			console.log('Lift not there in the current floor');
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
-			// console.log(`Lift already exists in the ${floorNo} floor !`);
+			console.log(`Lift already exists in the ${floorNo} floor !`);
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
-			// console.log(liftIndex + 'will come');
+			console.log(liftIndex + 'will come');
 			const nearestLift = this.liftModel.liftState[liftIndex];
-			// console.log(nearestLift);
-			if (nearestLift === undefined) {
+			console.log(nearestLift);
+			// null means alredy a lift there on that floor
+			if (nearestLift === null) {
+				// dont do anything
+			}
+			// undefined means no lift is available and also no lift is there on that floor
+			else if (nearestLift === undefined) {
 				this.liftModel.liftRequests.push(floorNo);
 			}
 			if (nearestLift !== undefined) {
@@ -114,6 +119,7 @@ class LiftController {
 					nearestLift.idle = true;
 					nearestLift.isMoving = false;
 					nearestLift.currentFloor = floorNo;
+					// nearestLift.movingTo = null;
 					this.liftModel.liftState[liftIndex] = nearestLift;
 					this.liftModel.liftState = [...this.liftModel.liftState];
 					console.log(this.liftModel.liftState);
