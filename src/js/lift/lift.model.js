@@ -33,17 +33,25 @@ class LiftModel {
 	//
 	getExistingLiftIndex = (floorNo) => {
 		// loop through liftState and find if a lift is movingTo that floor if so -> return undefined
-		const anyLiftMoving = this.liftState.filter(
-			(lift) => lift.movingTo === floorNo
-		);
-		if (anyLiftMoving.length > 0) {
-			return null;
-		}
+		let liftIndex = undefined;
 		for (let i = 0; i < this.liftState.length; i++) {
-			if (this.liftState[i].idle === true) {
-				return i;
+			if (
+				this.liftState[i].idle === true &&
+				this.liftState[i].currentFloor === floorNo
+			) {
+				liftIndex = i;
 			}
 		}
+		if (liftIndex === undefined) {
+			const anyLiftMoving = this.liftState.filter(
+				(lift) => lift.movingTo === floorNo
+			);
+			if (anyLiftMoving.length > 0) {
+				liftIndex = null;
+			}
+		}
+		// console.log(liftIndex);
+		return liftIndex;
 	};
 
 	checkIfLiftIsAlreadyThereInTheCurrentFloor = (floorNo) => {

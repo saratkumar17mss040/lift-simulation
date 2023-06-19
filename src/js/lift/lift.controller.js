@@ -100,8 +100,7 @@ class LiftController {
 			// undefined means no lift is available and also no lift is there on that floor
 			else if (nearestLift === undefined) {
 				this.liftModel.liftRequests.push(floorNo);
-			}
-			if (nearestLift !== undefined) {
+			} else if (nearestLift !== undefined || liftIndex === null) {
 				nearestLift.idle = false;
 				nearestLift.isMoving = true;
 				let openLiftTimeOut = setTimeout(() => {
