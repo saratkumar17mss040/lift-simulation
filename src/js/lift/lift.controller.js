@@ -3,6 +3,7 @@ class LiftController {
 		this.liftModel = liftModel;
 		this.liftView = liftView;
 		this.windowWidth = 0;
+		this.controllerTimeouts = [];
 	}
 
 	initializeEventHandlers() {
@@ -81,34 +82,37 @@ class LiftController {
 		const floor = event.target.parentNode.parentNode.parentNode;
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
-		// console.log(floorNo, '===>');
 		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
-			// console.log(
-			// 	this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)
-			// );
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
 			// console.log(`Lift already exists in the ${floorNo} floor !`);
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
 			const nearestLift = this.liftModel.liftState[liftIndex];
-			// console.log(nearestLift, '=> nl');
 			if (nearestLift === undefined) {
 				this.liftModel.liftRequests.push(floorNo);
 			}
 			if (nearestLift !== undefined) {
 				nearestLift.idle = false;
-				this.liftView.openLiftDoors(liftIndex);
-				setTimeout(() => {
+				let openLiftTimeOut = setTimeout(() => {
+					this.liftView.openLiftDoors(liftIndex);
+				}, 2500);
+				this.controllerTimeouts.push(openLiftTimeOut);
+
+				let closeLiftTimeout = setTimeout(() => {
 					this.liftView.closeLiftDoors(liftIndex);
 				}, 5000);
 
-				setTimeout(() => {
+				this.controllerTimeouts.push(closeLiftTimeout);
+
+				let liftStopTimeout = setTimeout(() => {
 					nearestLift.idle = true;
 					nearestLift.currentFloor = floorNo;
 					this.liftModel.liftState[liftIndex] = nearestLift;
 					this.liftModel.liftState = [...this.liftModel.liftState];
 				}, 7000);
+
+				this.controllerTimeouts.push(liftStopTimeout);
 			}
 		}
 	};
@@ -148,7 +152,17 @@ class LiftController {
 			isFormValid = false;
 		}
 		if (isFormValid) {
+			// reset the lift state
+			this.liftModel.liftState = [];
+			this.liftModel.liftRequests = [];
+			// clear the timeouts of lift open, close, stop
+			this.liftView.resetLiftTimeouts();
+			this.controllerTimeouts.forEach(function (timeout) {
+				clearTimeout(timeout);
+			});
+
 			this.liftModel.createLiftState(noOfLifts);
+			
 			const { liftState } = this.liftModel;
 			this.liftView.generateLiftSimulationView(liftState, noOfFloors);
 			const liveLiftButtons = this.liftView.getLiveLiftButtons();

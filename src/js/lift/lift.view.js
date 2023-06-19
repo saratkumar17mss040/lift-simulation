@@ -8,6 +8,7 @@ class LiftView {
 				'lift-simulation-container'
 			),
 		};
+		this.viewTimeouts = [];
 	}
 
 	getLiveLiftButtons = () => {
@@ -111,9 +112,6 @@ class LiftView {
 		nearestLift.idle = false;
 		nearestLift.isMoving = true;
 		nearestLift.movingTo = targetFloorNo;
-		// nearestLift.idle = true;
-		// nearestLift.currentFloor = targetFloorNo;
-		// console.log(nearestLift);
 		const lift = document.getElementById(`lift-${liftIndex}`);
 		const yAxis = targetFloorNo * -205 + 'px';
 		const transitionTime = Math.abs(targetFloorNo - oldFloorNo) * 2;
@@ -126,26 +124,30 @@ class LiftView {
 
 		// update the lift state
 		// stop the lift for 2's
-		setTimeout(() => {
+		let openLiftTimeOut = setTimeout(() => {
 			this.openLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToOpenDoors);
 
-		setTimeout(() => {
+		this.viewTimeouts.push(openLiftTimeOut);
+
+		let closeLiftTimeout = setTimeout(() => {
 			this.closeLiftDoors(liftIndex);
 		}, transistionTimeInMilliSecStartToCloseDoors);
 
-		setTimeout(() => {
+		this.viewTimeouts.push(closeLiftTimeout);
+
+		let liftStopTimeout = setTimeout(() => {
 			nearestLift.idle = true;
 			nearestLift.isMoving = false;
 			nearestLift.currentFloor = targetFloorNo;
 			liftState[liftIndex] = nearestLift;
 			liftState = [...liftState];
-			// console.log(nearestLift);
-			// console.log(liftRequests);
 			if (liftRequests.length > 0) {
 				moveNearestLift(liftRequests.shift());
 			}
 		}, liftStop);
+
+		this.viewTimeouts.push(liftStopTimeout);
 	};
 
 	resetLiftSimulationView = () => {
@@ -155,6 +157,13 @@ class LiftView {
 		this.elements.noOfFloors.value = '';
 		this.elements.noOfLifts.value = '';
 		this.elements.liftSimulationContainer.innerHTML = '';
+		this.resetLiftTimeouts()
+	};
+
+	resetLiftTimeouts = () => {
+		this.viewTimeouts.forEach(function (timeout) {
+			clearTimeout(timeout);
+		});
 	};
 }
 

@@ -36,7 +36,6 @@ class LiftModel {
 
 	checkIfLiftIsAlreadyThereInTheCurrentFloor = (floorNo) => {
 		const existingLifts = this.getExistingLifts(floorNo);
-		// console.log(existingLifts);
 		return existingLifts.length >= 1;
 	};
 }
