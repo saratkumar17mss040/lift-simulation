@@ -18,17 +18,15 @@ class LiftModel {
 
 	getExistingLifts = (floorNo) => {
 		const existingLifts = this.liftState.filter(
-			(lift) => lift.currentFloor === floorNo || lift.movingTo === floorNo
+			(lift) => lift.currentFloor === floorNo && lift.idle === true
 		);
 		return existingLifts;
 	};
 
+	//
 	getExistingLiftIndex = (floorNo) => {
 		for (let i = 0; i < this.liftState.length; i++) {
-			if (
-				this.liftState[i].currentFloor === floorNo &&
-				this.liftState[i].isMoving === false
-			) {
+			if (this.liftState[i].idle === true) {
 				return i;
 			}
 		}

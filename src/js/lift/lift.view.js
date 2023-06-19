@@ -145,6 +145,7 @@ class LiftView {
 			if (liftRequests.length > 0) {
 				moveNearestLift(liftRequests.shift());
 			}
+			// console.log(liftState);
 		}, liftStop);
 
 		this.viewTimeouts.push(liftStopTimeout);
@@ -157,7 +158,7 @@ class LiftView {
 		this.elements.noOfFloors.value = '';
 		this.elements.noOfLifts.value = '';
 		this.elements.liftSimulationContainer.innerHTML = '';
-		this.resetLiftTimeouts()
+		this.resetLiftTimeouts();
 	};
 
 	resetLiftTimeouts = () => {

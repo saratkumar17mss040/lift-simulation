@@ -61,6 +61,7 @@ class LiftController {
 		if (nearestLift === undefined) {
 			this.liftModel.liftRequests.push(floorNoToMoveTheLift);
 		} else {
+			console.log(liftState, '==>');
 			oldFloor = nearestLift.currentFloor;
 			this.liftView.moveTheLiftInView(
 				liftState,
@@ -83,17 +84,21 @@ class LiftController {
 		const floorNoStr = floor.getAttribute('id');
 		const floorNo = +floorNoStr[floorNoStr.length - 1];
 		if (!this.liftModel.checkIfLiftIsAlreadyThereInTheCurrentFloor(floorNo)) {
+			// console.log('Lift not there in the current floor');
 			this.moveNearestLift(floorNo);
 		} else {
 			// just take the first lift in the current floor and animate opening and closing the door
 			// console.log(`Lift already exists in the ${floorNo} floor !`);
 			const liftIndex = this.liftModel.getExistingLiftIndex(floorNo);
+			// console.log(liftIndex + 'will come');
 			const nearestLift = this.liftModel.liftState[liftIndex];
+			// console.log(nearestLift);
 			if (nearestLift === undefined) {
 				this.liftModel.liftRequests.push(floorNo);
 			}
 			if (nearestLift !== undefined) {
 				nearestLift.idle = false;
+				nearestLift.isMoving = true;
 				let openLiftTimeOut = setTimeout(() => {
 					this.liftView.openLiftDoors(liftIndex);
 				});
@@ -107,9 +112,11 @@ class LiftController {
 
 				let liftStopTimeout = setTimeout(() => {
 					nearestLift.idle = true;
+					nearestLift.isMoving = false;
 					nearestLift.currentFloor = floorNo;
 					this.liftModel.liftState[liftIndex] = nearestLift;
 					this.liftModel.liftState = [...this.liftModel.liftState];
+					console.log(this.liftModel.liftState);
 				}, 7000);
 
 				this.controllerTimeouts.push(liftStopTimeout);
