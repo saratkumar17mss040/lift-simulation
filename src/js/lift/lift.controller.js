@@ -96,7 +96,7 @@ class LiftController {
 				nearestLift.idle = false;
 				let openLiftTimeOut = setTimeout(() => {
 					this.liftView.openLiftDoors(liftIndex);
-				}, 2500);
+				});
 				this.controllerTimeouts.push(openLiftTimeOut);
 
 				let closeLiftTimeout = setTimeout(() => {
@@ -162,7 +162,7 @@ class LiftController {
 			});
 
 			this.liftModel.createLiftState(noOfLifts);
-			
+
 			const { liftState } = this.liftModel;
 			this.liftView.generateLiftSimulationView(liftState, noOfFloors);
 			const liveLiftButtons = this.liftView.getLiveLiftButtons();
